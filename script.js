@@ -109,6 +109,30 @@ function formatPercent(value) {
   return `${(value * 100).toFixed(1)}%`;
 }
 
+function getStudentsCountValue(fallback) {
+  const parsed = Number(studentsCountInput.value);
+  const min = Number(studentsCountInput.min);
+  const max = Number(studentsCountInput.max);
+
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
+
+  return Math.max(min, Math.min(max, Math.round(parsed)));
+}
+
+function buildScenarioWithStudentsCount(scenario, totalStudents) {
+  const baseRatio = scenario.y > 0 ? scenario.x / scenario.y : 0;
+  let submittedStudents = Math.round(baseRatio * totalStudents);
+  submittedStudents = Math.max(0, Math.min(totalStudents, submittedStudents));
+
+  return {
+    ...scenario,
+    x: submittedStudents,
+    y: totalStudents
+  };
+}
+
 function renderDecisionCard(scenario, decision, threshold) {
   const effect = effectByPlacement(selectedPlacement);
   const expectedLift = decision.show ? effect : 0;
@@ -218,19 +242,10 @@ function renderSimulationTable() {
   simulationTable.innerHTML = html;
 }
 
-function renderStudentsCountSimulation(scenario, threshold) {
-  const totalStudents = Number(studentsCountInput.value);
+function renderStudentsCountSimulation(simulatedScenario, threshold) {
+  const totalStudents = simulatedScenario.y;
+  const submittedStudents = simulatedScenario.x;
   studentsCountValue.textContent = String(totalStudents);
-
-  const baseRatio = scenario.y > 0 ? scenario.x / scenario.y : 0;
-  let submittedStudents = Math.round(baseRatio * totalStudents);
-  submittedStudents = Math.max(0, Math.min(totalStudents, submittedStudents));
-
-  const simulatedScenario = {
-    x: submittedStudents,
-    y: totalStudents,
-    daysLeft: scenario.daysLeft
-  };
 
   const simulatedDecision = computeDecision(simulatedScenario, threshold, nearDeadlineOnly.checked);
   const simulatedRatio = totalStudents > 0 ? submittedStudents / totalStudents : 0;
@@ -258,14 +273,18 @@ function renderStudentsCountSimulation(scenario, threshold) {
 function rerender() {
   const scenario = scenarios.find((item) => item.id === selectedScenarioId);
   const threshold = Number(thresholdInput.value);
+  const totalStudents = getStudentsCountValue(scenario.y);
+  const simulatedScenario = buildScenarioWithStudentsCount(scenario, totalStudents);
+
+  studentsCountInput.value = String(totalStudents);
 
   thresholdValue.textContent = threshold.toFixed(2);
 
-  const decision = computeDecision(scenario, threshold, nearDeadlineOnly.checked);
-  renderDecisionCard(scenario, decision, threshold);
-  renderScreen(scenario, decision);
+  const decision = computeDecision(simulatedScenario, threshold, nearDeadlineOnly.checked);
+  renderDecisionCard(simulatedScenario, decision, threshold);
+  renderScreen(simulatedScenario, decision);
   renderSimulationTable();
-  renderStudentsCountSimulation(scenario, threshold);
+  renderStudentsCountSimulation(simulatedScenario, threshold);
 }
 
 scenarioSelect.addEventListener("change", (event) => {
@@ -279,6 +298,7 @@ scenarioSelect.addEventListener("change", (event) => {
 thresholdInput.addEventListener("input", rerender);
 nearDeadlineOnly.addEventListener("change", rerender);
 studentsCountInput.addEventListener("input", rerender);
+studentsCountInput.addEventListener("change", rerender);
 
 placementSegment.addEventListener("click", (event) => {
   const target = event.target.closest("button[data-placement]");

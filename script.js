@@ -63,6 +63,9 @@ const nearDeadlineOnly = document.querySelector("#nearDeadlineOnly");
 const placementSegment = document.querySelector("#placementSegment");
 const decisionCard = document.querySelector("#decisionCard");
 const simulationTable = document.querySelector("#simulationTable");
+const studentsCountInput = document.querySelector("#studentsCountInput");
+const studentsCountValue = document.querySelector("#studentsCountValue");
+const studentsSimResult = document.querySelector("#studentsSimResult");
 
 const subjectChip = document.querySelector("#subjectChip");
 const homeworkDate = document.querySelector("#homeworkDate");
@@ -215,6 +218,43 @@ function renderSimulationTable() {
   simulationTable.innerHTML = html;
 }
 
+function renderStudentsCountSimulation(scenario, threshold) {
+  const totalStudents = Number(studentsCountInput.value);
+  studentsCountValue.textContent = String(totalStudents);
+
+  const baseRatio = scenario.y > 0 ? scenario.x / scenario.y : 0;
+  let submittedStudents = Math.round(baseRatio * totalStudents);
+  submittedStudents = Math.max(0, Math.min(totalStudents, submittedStudents));
+
+  const simulatedScenario = {
+    x: submittedStudents,
+    y: totalStudents,
+    daysLeft: scenario.daysLeft
+  };
+
+  const simulatedDecision = computeDecision(simulatedScenario, threshold, nearDeadlineOnly.checked);
+  const simulatedRatio = totalStudents > 0 ? submittedStudents / totalStudents : 0;
+
+  let note = "Условия показа выполнены.";
+  if (!simulatedDecision.hasEnoughAudience) {
+    note = "Получателей меньше 8, поэтому блок скрывается.";
+  } else if (!simulatedDecision.nearDeadlineOk) {
+    note = "До дедлайна больше 3 дней, поэтому блок скрывается.";
+  } else if (!simulatedDecision.show) {
+    note = "Доля сдавших ниже порога показа.";
+  }
+
+  studentsSimResult.innerHTML = `
+    <span class="status ${simulatedDecision.show ? "ok" : "skip"}">${simulatedDecision.show ? "Блок покажется" : "Блок не покажется"}</span>
+    <p class="sim-meta"><strong>При ${totalStudents} получателях</strong> ожидаемо сдадут <strong>${submittedStudents}</strong>.</p>
+    <div class="sim-progress">
+      <div class="sim-progress__fill" style="width: ${(simulatedRatio * 100).toFixed(1)}%"></div>
+    </div>
+    <p class="sim-meta">Доля сдавших: ${(simulatedRatio).toFixed(2)} | Порог показа: ${threshold.toFixed(2)}</p>
+    <p class="sim-meta">${note}</p>
+  `;
+}
+
 function rerender() {
   const scenario = scenarios.find((item) => item.id === selectedScenarioId);
   const threshold = Number(thresholdInput.value);
@@ -225,15 +265,20 @@ function rerender() {
   renderDecisionCard(scenario, decision, threshold);
   renderScreen(scenario, decision);
   renderSimulationTable();
+  renderStudentsCountSimulation(scenario, threshold);
 }
 
 scenarioSelect.addEventListener("change", (event) => {
   selectedScenarioId = event.target.value;
+  const scenario = scenarios.find((item) => item.id === selectedScenarioId);
+  studentsCountInput.value = String(scenario.y);
+  studentsCountValue.textContent = String(scenario.y);
   rerender();
 });
 
 thresholdInput.addEventListener("input", rerender);
 nearDeadlineOnly.addEventListener("change", rerender);
+studentsCountInput.addEventListener("input", rerender);
 
 placementSegment.addEventListener("click", (event) => {
   const target = event.target.closest("button[data-placement]");

@@ -51,6 +51,21 @@
         <p class="simulation__subtitle">Оценка баланса между охватом показов и uplift сдачи в срок.</p>
         <div id="simulationTable"></div>
       </section>
+
+      <section class="students-sim">
+        <h2 class="students-sim__title">Симуляция количества учеников</h2>
+        <p class="students-sim__subtitle">Используем долю сдавших из выбранного сценария и пересчитываем результат для другого размера класса.</p>
+
+        <label class="field">
+          <span class="field__label">Количество получателей задания</span>
+          <div class="range-field">
+            <input id="studentsCountInput" type="range" min="5" max="40" step="1" value="22" />
+            <span class="range-field__value" id="studentsCountValue">22</span>
+          </div>
+        </label>
+
+        <div class="students-sim__result" id="studentsSimResult"></div>
+      </section>
     </section>
 
     <section class="prototype-preview">

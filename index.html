@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neuroom: Social Proof Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="prototype">
+    <section class="prototype-controls">
+      <p class="prototype-controls__label">Прототип фичи</p>
+      <h1 class="prototype-controls__title">Соцдоказательство «Уже сдали / всего получателей»</h1>
+      <p class="prototype-controls__subtitle">Стилизация приближена к текущему продукту Neuroom (cabinet). Логика: показывать блок, если <code>доля сдавших &gt; порог показа</code>.</p>
+
+      <div class="form-grid">
+        <label class="field">
+          <span class="field__label">Сценарий ДЗ</span>
+          <select id="scenarioSelect"></select>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Порог показа (минимальная доля сдавших)</span>
+          <div class="range-field">
+            <input id="thresholdInput" type="range" min="0.1" max="0.8" step="0.05" value="0.4" />
+            <span class="range-field__value" id="thresholdValue">0.40</span>
+          </div>
+        </label>
+
+        <label class="switch">
+          <input id="nearDeadlineOnly" type="checkbox" checked />
+          <span>Показывать только если до дедлайна <= 3 дней</span>
+        </label>
+
+        <div class="field">
+          <span class="field__label">Экран показа</span>
+          <div class="segmented" id="placementSegment">
+            <button class="active" data-placement="detail" type="button">Просмотр ДЗ</button>
+            <button data-placement="send" type="button">Экран отправки</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="decision" id="decisionCard"></section>
+
+      <section class="simulation">
+        <h2 class="simulation__title">Подбор порога показа по тестовому набору</h2>
+        <p class="simulation__subtitle">Оценка баланса между охватом показов и uplift сдачи в срок.</p>
+        <div id="simulationTable"></div>
+      </section>
+    </section>
+
+    <section class="prototype-preview">
+      <div class="preview-shell">
+        <header class="preview-header">
+          <span class="preview-header__logo">Neuroom</span>
+          <span class="preview-header__avatar">Г</span>
+        </header>
+
+        <div class="preview-body">
+          <div class="preview-content">
+            <header class="task-header">
+              <span class="chips chips--info" id="subjectChip">Русский язык</span>
+              <p id="homeworkDate">Задание от 18.02.2026</p>
+            </header>
+
+            <section class="card card--task">
+              <p class="card__title">Задание</p>
+              <p class="card__text" id="taskDescription">Переписать 3 предложения и подчеркнуть грамматическую основу.</p>
+            </section>
+
+            <section class="task-deadline">
+              <p class="task-deadline__date">Срок сдачи: <strong id="deadlineDate">19.02</strong></p>
+              <div class="day-checker">
+                <span class="day-checker__text">Дней на выполнение:</span>
+                <span class="day-checker__number" id="daysLeft">2</span>
+              </div>
+            </section>
+
+            <section class="social-proof" id="socialProofBox" aria-live="polite"></section>
+
+            <button class="button button--primary" id="ctaText" type="button">Сдать ДЗ на проверку</button>
+            <p class="placement-hint" id="placementHint"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>

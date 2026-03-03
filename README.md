@@ -16,3 +16,9 @@
 ## Запуск
 
 Откройте файл `index.html` в браузере.
+
+## GitHub Pages
+
+- Деплой настроен через GitHub Actions: `.github/workflows/deploy-pages.yml`
+- Публикация запускается автоматически при пуше в `main`
+- В настройках репозитория нужно выбрать `Settings -> Pages -> Source: GitHub Actions` (один раз)

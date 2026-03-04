@@ -30,6 +30,14 @@
           </div>
         </label>
 
+        <label class="field">
+          <span class="field__label">Количество получателей задания</span>
+          <div class="range-field">
+            <input id="studentsCountInput" type="range" min="5" max="40" step="1" value="22" />
+            <span class="range-field__value" id="studentsCountValue">22</span>
+          </div>
+        </label>
+
         <label class="switch">
           <input id="nearDeadlineOnly" type="checkbox" checked />
           <span>Показывать только если до дедлайна <= 3 дней</span>
@@ -53,16 +61,8 @@
       </section>
 
       <section class="students-sim">
-        <h2 class="students-sim__title">Симуляция количества учеников</h2>
-        <p class="students-sim__subtitle">Используем долю сдавших из выбранного сценария и пересчитываем результат для другого размера класса.</p>
-
-        <label class="field">
-          <span class="field__label">Количество получателей задания</span>
-          <div class="range-field">
-            <input id="studentsCountInput" type="range" min="5" max="40" step="1" value="22" />
-            <span class="range-field__value" id="studentsCountValue">22</span>
-          </div>
-        </label>
+        <h2 class="students-sim__title">Результат симуляции количества учеников</h2>
+        <p class="students-sim__subtitle">Расчет обновляется от общих элементов управления выше.</p>
 
         <div class="students-sim__result" id="studentsSimResult"></div>
       </section>

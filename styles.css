@@ -435,30 +435,64 @@ tr.best {
 
 .social-proof {
   display: none;
-  border-radius: 12px;
-  border: 1px dashed rgba(116, 87, 254, 0.4);
-  background: rgba(145, 100, 254, 0.1);
-  padding: 12px;
-  text-align: center;
+  border-radius: 8px;
+  background: #f0edff;
+  padding: 8px 12px;
 }
 
 .social-proof.show {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   animation: showSocialProof 0.2s ease-out;
 }
 
-.social-proof .title {
-  margin: 0;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 700;
-  color: var(--color-primary);
+.social-proof.show.high {
+  background: #e8faf0;
 }
 
-.social-proof .meta {
-  margin: 6px 0 0;
-  font-size: 13px;
-  line-height: 18px;
+.social-proof__avatars {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.social-proof__avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid #f0edff;
+  margin-left: -6px;
+  font-size: 8px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-proof.high .social-proof__avatar {
+  border-color: #e8faf0;
+}
+
+.social-proof__avatar:first-child {
+  margin-left: 0;
+}
+
+.social-proof__avatar--1 { background: #7457fe; }
+.social-proof__avatar--2 { background: #34c759; }
+.social-proof__avatar--3 { background: #ff9500; }
+.social-proof__avatar--4 { background: #5ac8fa; }
+
+.social-proof__text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-primary);
+  line-height: 16px;
+  letter-spacing: -0.2px;
+}
+
+.social-proof.high .social-proof__text {
+  color: #28a745;
 }
 
 .button {

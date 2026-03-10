@@ -172,13 +172,27 @@ function renderScreen(scenario, decision) {
     : "Показ на экране отправки фото: эффект обычно ниже";
 
   if (decision.show) {
+    const isHigh = decision.ratio >= 0.8;
     socialProofBox.classList.add("show");
+    socialProofBox.classList.toggle("high", isHigh);
+
+    const initials = ["АК", "МВ", "ДС", "ИП"];
+    const avatarCount = isHigh ? 4 : 3;
+    const avatarsHtml = initials
+      .slice(0, avatarCount)
+      .map((init, i) => `<div class="social-proof__avatar social-proof__avatar--${i + 1}">${init}</div>`)
+      .join("");
+
+    const text = isHigh
+      ? `${scenario.x} из ${scenario.y} уже сдали — почти все!`
+      : `${scenario.x} из ${scenario.y} одноклассников уже сдали`;
+
     socialProofBox.innerHTML = `
-      <p class="title">Уже сдали ${scenario.x} из ${scenario.y}</p>
-      <p class="meta">Большая часть класса уже отправила работу. Сдавай сейчас, пока не вышел срок.</p>
+      <div class="social-proof__avatars">${avatarsHtml}</div>
+      <span class="social-proof__text">${text}</span>
     `;
   } else {
-    socialProofBox.classList.remove("show");
+    socialProofBox.classList.remove("show", "high");
     socialProofBox.innerHTML = "";
   }
 }

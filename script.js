@@ -166,6 +166,7 @@ function renderScreen(scenario, decision) {
   taskDescription.textContent = scenario.description;
   deadlineDate.textContent = scenario.deadline;
   daysLeft.textContent = String(scenario.daysLeft);
+  document.querySelector(".preview-nav__title").textContent = "Просмотр задания";
 
   placementHint.textContent = selectedPlacement === "detail"
     ? "Показ в точке решения: перед кнопкой " + '"Сдать ДЗ на проверку"'

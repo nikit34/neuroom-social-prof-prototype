@@ -70,21 +70,32 @@
 
     <section class="prototype-preview">
       <div class="preview-shell">
-        <header class="preview-header">
-          <span class="preview-header__logo">Neuroom</span>
-          <span class="preview-header__avatar">Г</span>
-        </header>
+        <div class="preview-browser-bar">
+          <div class="preview-browser-bar__pill">
+            <span class="preview-browser-bar__lock">🔒</span>
+            <span class="preview-browser-bar__url">neoroom.ru</span>
+          </div>
+        </div>
+
+        <div class="preview-brand">
+          <span class="preview-brand__name">Нейрум</span>
+          <span class="preview-brand__avatar"></span>
+        </div>
 
         <div class="preview-body">
           <div class="preview-content">
+            <div class="preview-nav">
+              <button class="preview-nav__back" type="button">←</button>
+              <span class="preview-nav__title">Просмотр задания</span>
+            </div>
+
             <header class="task-header">
-              <span class="chips chips--info" id="subjectChip">Русский язык</span>
-              <p id="homeworkDate">Задание от 18.02.2026</p>
+              <span class="subject-tag" id="subjectChip">Русский язык</span>
+              <p class="task-header__date" id="homeworkDate">Задание от 18.02.2026</p>
             </header>
 
-            <section class="card card--task">
-              <p class="card__title">Задание</p>
-              <p class="card__text" id="taskDescription">Переписать 3 предложения и подчеркнуть грамматическую основу.</p>
+            <section class="task-desc-box">
+              <p class="task-desc-box__text" id="taskDescription">Переписать 3 предложения и подчеркнуть грамматическую основу.</p>
             </section>
 
             <section class="task-deadline">
@@ -95,16 +106,32 @@
               </div>
             </section>
 
+            <section class="photo-grid">
+              <div class="photo-placeholder">
+                <span class="photo-placeholder__label">фото 1</span>
+                <button class="photo-placeholder__expand" type="button">⤢</button>
+              </div>
+              <div class="photo-placeholder">
+                <span class="photo-placeholder__label">фото 2</span>
+                <button class="photo-placeholder__expand" type="button">⤢</button>
+              </div>
+            </section>
+
             <section class="social-proof" id="socialProofBox" aria-live="polite"></section>
 
             <button class="button button--primary" id="ctaText" type="button">Сдать ДЗ на проверку</button>
             <p class="placement-hint" id="placementHint"></p>
           </div>
         </div>
+
+        <div class="preview-home-indicator">
+          <div class="preview-home-indicator__bar"></div>
+        </div>
       </div>
     </section>
   </main>
 
   <script src="./script.js"></script>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </body>
 </html>
